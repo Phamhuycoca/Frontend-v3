@@ -1,15 +1,15 @@
-import type { ButtonProps as AntButtonProps } from "antd"
-import type { ReactNode } from "react"
+import type { ButtonProps as AntButtonProps } from 'antd';
+import type { ReactNode } from 'react';
 
 export type ButtonProps = AntButtonProps & {
-    text?: string
-}
+  text?: string;
+};
 export type CommonButtonProps = ButtonProps & {
-    text: string   
-    icon?: string | ReactNode
-}
+  text: string;
+  icon?: string | ReactNode;
+};
 export type ConifyProps = {
-    icon: string
-    width?: string | number
-    height?: string | number
-}
+  icon: string;
+  width?: string | number;
+  height?: string | number;
+};
