@@ -1,6 +1,6 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
-import { accessToken, clearTokens, refreshToken, setTokens } from '../common/LocalStore';
+import { getAccessToken, clearTokens, getRefreshToken, setTokens } from '../common/LocalStore';
 
 const apiClient: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -9,6 +9,7 @@ const apiClient: AxiosInstance = axios.create({
 
 // Thêm access token vào mỗi request
 apiClient.interceptors.request.use((config) => {
+  const accessToken = getAccessToken();
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
@@ -53,9 +54,8 @@ apiClient.interceptors.response.use(
 
       try {
         const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/nguoi-dung/RefreshToken`, {
-          refresh_token: refreshToken,
+          refresh_token: getRefreshToken(),
         });
-        console.log(res);
         const newToken = res.data.access_token;
         const newRefreshToken = res.data.refresh_token;
         setTokens(newToken, newRefreshToken);
