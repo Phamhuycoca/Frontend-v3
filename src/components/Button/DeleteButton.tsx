@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import type { ButtonProps } from '../../types/ButtonProps';
+import type { ButtonProps } from './ButtonProps';
 import { DeleteOutlined } from '@ant-design/icons';
 
 export const DeleteButton = ({ text = 'Xóa', onClick, size }: ButtonProps) => {

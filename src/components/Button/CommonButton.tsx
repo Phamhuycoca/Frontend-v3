@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import type { CommonButtonProps } from '../../types/ButtonProps';
+import type { CommonButtonProps } from './ButtonProps';
 import { Conify } from '../Icon/Conify';
 
 export const CommonButton = ({ icon, text, ...rest }: CommonButtonProps) => {

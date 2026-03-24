@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import type { ButtonProps } from '../../types/ButtonProps';
+import type { ButtonProps } from './ButtonProps';
 import { EditOutlined } from '@ant-design/icons';
 
 export const EditButton = ({ text = 'Chỉnh sửa', onClick, size }: ButtonProps) => {

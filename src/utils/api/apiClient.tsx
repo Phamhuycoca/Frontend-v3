@@ -1,15 +1,16 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
+import { accessToken, clearTokens, refreshToken, setTokens } from '../common/LocalStore';
 
 const apiClient: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
-  //timeout: 10000,
+  timeout: 10000,
 });
+
 // Thêm access token vào mỗi request
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access_token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
 });
@@ -25,9 +26,9 @@ const processQueue = (error: any, token: string | null = null) => {
       prom.resolve(token);
     }
   });
-
   failedQueue = [];
 };
+
 // Xử lý response
 apiClient.interceptors.response.use(
   (response) => response,
@@ -51,24 +52,19 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const refreshToken = localStorage.getItem('refresh_token');
         const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/nguoi-dung/RefreshToken`, {
           refresh_token: refreshToken,
         });
         console.log(res);
-
         const newToken = res.data.access_token;
-        localStorage.setItem('access_token', res.data.access_token);
-        localStorage.setItem('refresh_token', res.data.refresh_token);
-
+        const newRefreshToken = res.data.refresh_token;
+        setTokens(newToken, newRefreshToken);
         apiClient.defaults.headers.common['Authorization'] = 'Bearer ' + newToken;
         processQueue(null, newToken);
-
         return apiClient(originalRequest); // retry request cũ
       } catch (err) {
         processQueue(err, null);
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
+        clearTokens();
         //window.location.href = '/login'; // logout
         return Promise.reject(err);
       } finally {

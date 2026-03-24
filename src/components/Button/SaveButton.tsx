@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import type { ButtonProps } from '../../types/ButtonProps';
+import type { ButtonProps } from './ButtonProps';
 import { SaveOutlined } from '@ant-design/icons';
 
 export const SaveButton = ({ text = 'Lưu', onClick, size }: ButtonProps) => {
