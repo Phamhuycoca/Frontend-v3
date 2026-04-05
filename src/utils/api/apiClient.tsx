@@ -1,10 +1,10 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
-import { getAccessToken, clearTokens, getRefreshToken, setTokens } from '../common/LocalStore';
+import { getAccessToken, clearTokens, getRefreshToken, setTokens } from '../../common/LocalStore';
 
 const apiClient: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
-  timeout: 10000,
+  timeout: 100000,
 });
 
 // Thêm access token vào mỗi request
@@ -35,7 +35,6 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-
     // Nếu token hết hạn
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {

@@ -3,15 +3,17 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { StyleProvider } from '@ant-design/cssinjs';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, App as AntdApp } from 'antd';
 import { Routers } from './routers/routers.tsx';
 import { Provider } from 'react-redux';
 import { store } from './stores/store.tsx';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { GlobalModalDelete } from './components/Global/ModalDelete.tsx';
+import { GlobalAlert } from './components/Global/Alert.tsx';
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <StyleProvider hashPriority="high">
-      <ConfigProvider theme={{ cssVar: { key: 'app' }, hashed: false }}>
+  <StyleProvider hashPriority="high">
+    <ConfigProvider theme={{ cssVar: { key: 'app' }, hashed: false }}>
+      <AntdApp>
         <Provider store={store}>
           <Router>
             <Routes>
@@ -33,8 +35,10 @@ createRoot(document.getElementById('root')!).render(
               })}
             </Routes>
           </Router>
+          <GlobalAlert />
+          <GlobalModalDelete />
         </Provider>
-      </ConfigProvider>
-    </StyleProvider>
-  </StrictMode>,
+      </AntdApp>
+    </ConfigProvider>
+  </StyleProvider>,
 );

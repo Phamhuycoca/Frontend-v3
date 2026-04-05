@@ -1,7 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-
+import danhMucSlice from './danhmuc.slice';
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    danhmuc: danhMucSlice,
+  },
 });
 
 // Tạo type RootState và AppDispatch để dùng trong app
