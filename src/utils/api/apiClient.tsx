@@ -52,7 +52,7 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/nguoi-dung/RefreshToken`, {
+        const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/refresh_token`, {
           refresh_token: getRefreshToken(),
         });
         const newToken = res.data.access_token;

@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import danhMucSlice from './danhmuc.slice';
+import nguoiDungSlice from './nguoidung.slice';
 export const store = configureStore({
   reducer: {
     danhmuc: danhMucSlice,
+    nguoidung: nguoiDungSlice,
   },
 });
 
