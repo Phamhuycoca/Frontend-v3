@@ -1,11 +1,5 @@
 import { Space } from 'antd';
-import {
-  CommonButton,
-  CreateButton,
-  DeleteButton,
-  EditButton,
-  SaveButton,
-} from './components/Button';
+import { DeleteButton, EditButton } from './components/Button';
 import { TableList } from './components/Table/TableList';
 const App = () => {
   return (
