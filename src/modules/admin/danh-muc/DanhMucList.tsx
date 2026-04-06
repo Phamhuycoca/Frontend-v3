@@ -7,6 +7,7 @@ import { setDanhMucList, setMeta } from '../../../stores/danhmuc.slice';
 import { CreateButton, DeleteButton, EditButton } from '../../../components/Button';
 import ModalService from '../../../utils/services/ModalService';
 import { ConstDanhMuc } from './DanhMuc';
+import { Space } from 'antd';
 export const DanhMucList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [columns, setColumns] = useState<any[]>([]);
@@ -15,7 +16,6 @@ export const DanhMucList = () => {
   useEffect(() => {
     const sub = DanhMucService.refresh$.subscribe((res) => {
       if (res.key === ConstDanhMuc.key) {
-        console.log('res.mode', res.mode);
         fetchDanhMucList();
       }
     });
@@ -57,29 +57,33 @@ export const DanhMucList = () => {
       {
         title: 'Hành động',
         dataIndex: 'action',
+        width: '10%',
+        align: 'center',
         render: (_: any, record: any) => (
           <div>
-            <DeleteButton
-              onClick={async () => {
-                const confirmed = await ModalService.confirm();
-                if (confirmed) {
-                  DanhMucService.delete(record.id).subscribe(
-                    () => {
-                      ModalService.close();
-                    },
-                    (error) => {
-                      console.error(error);
-                      ModalService.close();
-                    },
-                  );
-                }
-              }}
-            />
-            <EditButton
-              onClick={async () => {
-                DanhMucService.openUpdateModal(record);
-              }}
-            />
+            <Space>
+              <EditButton
+                onClick={async () => {
+                  DanhMucService.openUpdateModal(record);
+                }}
+              />
+              <DeleteButton
+                onClick={async () => {
+                  const confirmed = await ModalService.confirm();
+                  if (confirmed) {
+                    DanhMucService.delete(record.id).subscribe(
+                      () => {
+                        ModalService.close();
+                      },
+                      (error) => {
+                        console.error(error);
+                        ModalService.close();
+                      },
+                    );
+                  }
+                }}
+              />
+            </Space>
           </div>
         ),
       },
