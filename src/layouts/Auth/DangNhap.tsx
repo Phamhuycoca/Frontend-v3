@@ -1,14 +1,17 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Flex, Form, Image, Input, Row } from 'antd';
 import AuthService from '../../utils/services/AuthService';
+import { useNavigate } from 'react-router-dom';
 
 export const DangNhap = () => {
+  const navigate = useNavigate();
+
   const onFinish = (values: any) => {
-    const res = AuthService.DangNhap(values);
-    if (res) {
-      window.location.href = '/nguoi-dung';
+    const result = AuthService.DangNhap(values);
+    if (result) {
+      navigate('/nguoi-dung');
     }
-    console.log('Received values of form: ', values);
+    result.unsubscribe();
   };
   return (
     <div
@@ -34,7 +37,9 @@ export const DangNhap = () => {
             src="https://res.cloudinary.com/drhdgw1xx/image/upload/v1775572501/Thi%E1%BA%BFt_k%E1%BA%BF_ch%C6%B0a_c%C3%B3_t%C3%AAn_obvyeq.png"
           />
         </Row>
-        <p className="text-center h4">Phần mềm quản lý công việc</p>
+        <p style={{ fontFamily: 'sans-serif' }} className="text-center h4">
+          Phần mềm quản lý công việc
+        </p>
         <Form.Item
           name="ten_dang_nhap"
           rules={[{ required: true, message: 'Vui lòng nhập tài khoản đăng nhập!' }]}

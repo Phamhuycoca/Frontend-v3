@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   BellOutlined,
   CloseCircleOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
   SaveOutlined,
   UserDeleteOutlined,
 } from '@ant-design/icons';
@@ -10,6 +12,7 @@ import {
   Avatar,
   Badge,
   Breadcrumb,
+  Button,
   Col,
   Dropdown,
   Input,
@@ -101,9 +104,17 @@ const AdminLayout: React.FC = () => {
   } = theme.useToken();
   const { styles, cx } = useStyles();
   const navigate = useNavigate();
+  const [collapsed, setCollapsed] = useState<boolean>(false);
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider width={'12%'} theme="light">
+      <Sider
+        width={'12%'}
+        theme="light"
+        collapsible
+        collapsed={collapsed}
+        collapsedWidth={0}
+        trigger={null}
+      >
         <Menu
           theme="light"
           defaultSelectedKeys={['1']}
@@ -124,9 +135,18 @@ const AdminLayout: React.FC = () => {
           <Row
             justify="space-between"
             align="middle"
-            style={{ width: '100%', height: '100%', padding: '0 15px' }}
+            style={{ width: '100%', height: '100%', padding: '0 15px 0 0' }}
           >
-            <Breadcrumb items={[{ title: 'Trang chủ' }, { title: 'Quản lý danh mục' }]} />
+            <Button
+              type="text"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => setCollapsed(!collapsed)}
+              style={{
+                fontSize: 18,
+                width: 64,
+                height: 64,
+              }}
+            />
             <Row
               justify="space-between"
               align="middle"
@@ -203,7 +223,18 @@ const AdminLayout: React.FC = () => {
                         maxWidth: 200,
                       }}
                     >
-                      <Avatar size={42} src={<img draggable={false} src={} alt="avatar" />} />
+                      <Avatar
+                        size={42}
+                        src={
+                          <img
+                            draggable={false}
+                            src={
+                              'https://res.cloudinary.com/drhdgw1xx/image/upload/v1775572508/624160754_1571978107342366_7527978856429040370_n_wftvvn.jpg'
+                            }
+                            alt="avatar"
+                          />
+                        }
+                      />
 
                       <div
                         style={{
@@ -249,6 +280,10 @@ const AdminLayout: React.FC = () => {
             padding: '16px 16px',
           }}
         >
+          <Breadcrumb
+            items={[{ title: 'Trang chủ' }, { title: 'Quản lý danh mục' }]}
+            className="mb-3"
+          />
           <Outlet />
         </Content>
       </Layout>

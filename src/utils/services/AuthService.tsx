@@ -15,10 +15,10 @@ class AuthService extends ApiObservable<DangNhapRespone> {
   }
   DangNhap(data: DangNhapType) {
     return this.postByUrl<DangNhapRespone>('auth/dang-nhap', data).subscribe((res) => {
-      setTimeout(() => {
+      if (res.access_token && res.refresh_token) {
         setTokens(res.access_token, res.refresh_token);
-      }, 300);
-      return true;
+        return true;
+      }
     });
   }
 }
