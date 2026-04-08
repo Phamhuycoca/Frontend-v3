@@ -203,18 +203,7 @@ const AdminLayout: React.FC = () => {
                         maxWidth: 200,
                       }}
                     >
-                      <Avatar
-                        size={42}
-                        src={
-                          <img
-                            draggable={false}
-                            src={
-                              'https://res.cloudinary.com/drhdgw1xx/image/upload/v1775572508/624160754_1571978107342366_7527978856429040370_n_wftvvn.jpg'
-                            }
-                            alt="avatar"
-                          />
-                        }
-                      />
+                      <Avatar size={42} src={<img draggable={false} src={} alt="avatar" />} />
 
                       <div
                         style={{
