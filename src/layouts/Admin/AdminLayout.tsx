@@ -1,265 +1,105 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  BellOutlined,
-  CloseCircleOutlined,
-  SaveOutlined,
-  UserDeleteOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UploadOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
 } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import {
-  Avatar,
-  Badge,
-  Breadcrumb,
-  Col,
-  Dropdown,
-  Input,
-  Layout,
-  List,
-  Menu,
-  Row,
-  Space,
-  theme,
-} from 'antd';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { createStyles } from 'antd-style';
+import { Button, Layout, Menu, theme } from 'antd';
 
-const { Header, Content, Sider } = Layout;
-const items3: MenuProps['items'] = [
-  {
-    label: 'Quản lý người dùng',
-    key: 'nguoi-dung',
-  },
-  {
-    label: 'Quản lý danh mục',
-    key: 'danh-muc',
-  },
-];
+const { Header, Sider, Content } = Layout;
 
-const items: MenuProps['items'] = [
-  {
-    label: 'Thông tin tài khoản',
-    key: '0',
-  },
-  {
-    label: 'Cài đặt',
-    key: '1',
-  },
-  {
-    type: 'divider',
-  },
-  {
-    label: 'Đăng xuất',
-    key: '3',
-  },
-];
-type ListMemu = {
-  key?: string;
-  icon?: React.ReactNode;
-  title?: string;
-  description?: string;
-};
-const ListMenus: ListMemu[] = [
-  {
-    key: '1',
-    icon: <SaveOutlined />,
-    title: 'Save Post',
-    description: 'Add this to your saved items',
-  },
-  {
-    key: '2',
-    icon: <CloseCircleOutlined />,
-    title: 'Hide Post',
-    description: 'See fewer posts like this',
-  },
-  {
-    key: '3',
-    icon: <UserDeleteOutlined />,
-    title: 'Unfollow User',
-    description: 'Stop seeing posts but stay friends',
-  },
-  {
-    key: '4',
-    icon: <BellOutlined />,
-    title: 'Notifications',
-    description: 'Turn on notifications for this post',
-  },
-];
-const useStyles = createStyles(({ css }) => ({
-  list: css`
-    transition: all 0.3s ease;
-    &:hover {
-      background-color: #f0f2f5;
-      .ant-list-item-meta-description > span {
-        color: #48a3e6;
-      }
-    }
-  `,
-}));
 const AdminLayout: React.FC = () => {
+  const [collapsed, setCollapsed] = useState(false);
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-  const { styles, cx } = useStyles();
-  const navigate = useNavigate();
+
+  const menuItems = [
+    {
+      key: '1',
+      icon: <UserOutlined />,
+      label: 'Người dùng',
+    },
+    {
+      key: '2',
+      icon: <VideoCameraOutlined />,
+      label: 'Video',
+    },
+    {
+      key: '3',
+      icon: <UploadOutlined />,
+      label: 'Upload',
+    },
+  ];
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider width={'12%'} theme="light">
-        <Menu
-          theme="light"
-          defaultSelectedKeys={['1']}
-          mode="inline"
-          items={items3}
-          onClick={(e) => {
-            navigate(e.key, { replace: true });
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        collapsedWidth={0}
+        width={240}
+      >
+        <div
+          style={{
+            height: 64,
+            margin: 16,
+            color: '#fff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: 600,
+            fontSize: 18,
           }}
+        >
+          ADMIN
+        </div>
+
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={['1']}
+          items={menuItems}
         />
       </Sider>
+
       <Layout>
         <Header
           style={{
             padding: 0,
             background: colorBgContainer,
+            display: 'flex',
+            alignItems: 'center',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
           }}
         >
-          <Row
-            justify="space-between"
-            align="middle"
-            style={{ width: '100%', height: '100%', padding: '0 15px' }}
-          >
-            <Breadcrumb items={[{ title: 'Trang chủ' }, { title: 'Quản lý danh mục' }]} />
-            <Row
-              justify="space-between"
-              align="middle"
-              style={{
-                width: '50%',
-              }}
-            >
-              <Col
-                span={12}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                <Input.Search
-                  size="large"
-                  placeholder="Nhập thông tin tìm kiếm"
-                  variant="outlined"
-                />
-              </Col>
-              <Col
-                span={12}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'end',
-                }}
-              >
-                <Space>
-                  <Dropdown
-                    placement="bottomRight"
-                    arrow
-                    trigger={['click']}
-                    overlayStyle={{ width: 300 }}
-                    dropdownRender={() => (
-                      <div style={{ backgroundColor: '#fff', borderRadius: '5px' }}>
-                        <List
-                          style={{ cursor: 'pointer' }}
-                          itemLayout="horizontal"
-                          dataSource={ListMenus}
-                          renderItem={(item, index) => (
-                            <List.Item className={cx(styles.list)}>
-                              <List.Item.Meta
-                                key={index}
-                                avatar={
-                                  <div style={{ fontSize: 18 }} className="ms-2">
-                                    {item.icon}
-                                  </div>
-                                }
-                                title={<span>{item.title}</span>}
-                                description={
-                                  <span style={{ fontSize: 14 }}>{item.description}</span>
-                                }
-                              />
-                            </List.Item>
-                          )}
-                        />
-                      </div>
-                    )}
-                  >
-                    <a onClick={(e) => e.preventDefault()}>
-                      <Badge count={50} className="me-3">
-                        <BellOutlined style={{ fontSize: '24px' }} />
-                      </Badge>
-                    </a>
-                  </Dropdown>
-
-                  <Dropdown menu={{ items }} trigger={['click']} placement="bottomRight">
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 10,
-                        cursor: 'pointer',
-                        maxWidth: 200,
-                      }}
-                    >
-                      <Avatar
-                        size={42}
-                        src={
-                          <img
-                            draggable={false}
-                            src={''
-                            }
-                            alt="avatar"
-                          />
-                        }
-                      />
-
-                      <div
-                        style={{
-                          flex: 1,
-                          minWidth: 0,
-                          display: 'flex',
-                          flexDirection: 'column',
-                          lineHeight: 1.2,
-                        }}
-                      >
-                        <span
-                          style={{
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            fontWeight: 600,
-                          }}
-                        >
-                          Phạm Khắc Huy
-                        </span>
-
-                        <span
-                          style={{
-                            fontSize: 12,
-                            color: '#8c8c8c',
-                          }}
-                        >
-                          🟢 Online
-                        </span>
-                      </div>
-                    </div>
-                  </Dropdown>
-                </Space>
-              </Col>
-            </Row>
-          </Row>
+          <Button
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
+            style={{
+              fontSize: 18,
+              width: 64,
+              height: 64,
+            }}
+          />
         </Header>
+
         <Content
           style={{
-            margin: '20px 16px',
+            margin: 16,
+            padding: 24,
+            minHeight: 280,
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
-            padding: '16px 16px',
           }}
         >
-          <Outlet />
+          <h2>Dashboard Content</h2>
+          <p>Nhấn nút menu trên header để ẩn / hiện sidebar.</p>
         </Content>
       </Layout>
     </Layout>
