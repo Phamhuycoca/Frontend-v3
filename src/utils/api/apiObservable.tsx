@@ -27,6 +27,35 @@ export class ApiObservable<T> {
     console.error(`Error ${action}:`, err);
     return throwError(() => err);
   }
+  // ================= URL DYNAMIC METHODS =================
+
+  getByUrl<R = any>(url: string, params?: any): Observable<R> {
+    return from(apiClient.get<R>(url, { params })).pipe(
+      map((res) => res.data),
+      catchError((err) => this.handleError(err, 'fetching data')),
+    );
+  }
+
+  postByUrl<R = any, D = any>(url: string, data?: D): Observable<R> {
+    return from(apiClient.post<R>(url, data)).pipe(
+      map((res) => res.data),
+      catchError((err) => this.handleError(err, 'posting data')),
+    );
+  }
+
+  putByUrl<R = any, D = any>(url: string, data?: D): Observable<R> {
+    return from(apiClient.put<R>(url, data)).pipe(
+      map((res) => res.data),
+      catchError((err) => this.handleError(err, 'updating data')),
+    );
+  }
+
+  deleteByUrl<R = any>(url: string): Observable<R> {
+    return from(apiClient.delete<R>(url)).pipe(
+      map((res) => res.data),
+      catchError((err) => this.handleError(err, 'deleting data')),
+    );
+  }
 
   // ================= GET MANY =================
   getMany<R>(params?: any): Observable<PagedResponse<R>> {
@@ -55,9 +84,7 @@ export class ApiObservable<T> {
     return from(apiClient.post<ResponseData<R>>(this.url, data)).pipe(
       map((res) => {
         AlertService.success(res.data.message || 'Thêm mới thành công');
-
         this.refreshList('create', this.key);
-
         return res.data;
       }),
       catchError((err) => this.handleError(err, 'creating')),

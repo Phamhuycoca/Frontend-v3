@@ -209,7 +209,7 @@ const AdminLayout: React.FC = () => {
                           <img
                             draggable={false}
                             src={
-                              'https://res.cloudinary.com/drhdgw1xx/image/upload/v1742911592/481975633_2251497388613022_1771262822051285834_n_orw75k.jpg'
+                              'https://res.cloudinary.com/drhdgw1xx/image/upload/v1775572508/624160754_1571978107342366_7527978856429040370_n_wftvvn.jpg'
                             }
                             alt="avatar"
                           />

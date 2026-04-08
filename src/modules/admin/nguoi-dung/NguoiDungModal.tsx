@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Form, Input, Modal } from 'antd';
 import type { NguoiDungType } from './NguoiDung';
 import NguoiDungSevice from '../../../utils/services/NguoiDungSevice';
+import { CloseButton, SaveButton } from '../../../components/Button';
 
 export const NguoiDungModal = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -23,14 +24,42 @@ export const NguoiDungModal = () => {
       sub.unsubscribe();
     };
   }, []);
+  const submit = (values: NguoiDungType) => {
+    if (mode === 'update') {
+      values.ten_day_du = values.ho + ' ' + values.ten;
+      const res = { ...data, ...values };
+      NguoiDungSevice.update(res.id, res).subscribe((res) => {
+        if (res) {
+          form.resetFields();
+          NguoiDungSevice.closeModal();
+        }
+      });
+    } else {
+      values.ten_day_du = values.ho + ' ' + values.ten;
+      NguoiDungSevice.create(values).subscribe((res) => {
+        if (res) {
+          form.resetFields();
+          NguoiDungSevice.closeModal();
+        }
+      });
+    }
+  };
 
   return (
     <>
       <Modal
         open={isModalOpen}
-        onCancel={() => NguoiDungSevice.closeModal()}
         title="Người dùng"
-        onOk={() => form.submit()}
+        footer={
+          <>
+            <SaveButton onClick={() => form.submit()} />
+            <CloseButton
+              onClick={() => {
+                NguoiDungSevice.closeModal();
+              }}
+            />
+          </>
+        }
       >
         <Form
           labelAlign="left"
@@ -38,26 +67,7 @@ export const NguoiDungModal = () => {
           wrapperCol={{ span: 16 }}
           layout="horizontal"
           form={form}
-          onFinish={(values: NguoiDungType) => {
-            if (mode === 'update') {
-              values.ten_day_du = values.ho + ' ' + values.ten;
-              const res = { ...data, ...values };
-              NguoiDungSevice.update(res.id, res).subscribe((res) => {
-                if (res) {
-                  form.resetFields();
-                  NguoiDungSevice.closeModal();
-                }
-              });
-            } else {
-              values.ten_day_du = values.ho + ' ' + values.ten;
-              NguoiDungSevice.create(values).subscribe((res) => {
-                if (res) {
-                  form.resetFields();
-                  NguoiDungSevice.closeModal();
-                }
-              });
-            }
-          }}
+          onFinish={submit}
         >
           <Form.Item label="Họ" name="ho">
             <Input />

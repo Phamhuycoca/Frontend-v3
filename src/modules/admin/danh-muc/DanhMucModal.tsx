@@ -3,6 +3,7 @@ import DanhMucService from '../../../utils/services/DanhMucService';
 import { Form, Input, InputNumber, Modal, Radio, Spin, TreeSelect } from 'antd';
 import type { DanhMucType } from './DanhMuc';
 import { ConvertTreeSelect } from '../../../utils/helpers/Convert';
+import { CloseButton, SaveButton } from '../../../components/Button';
 
 export const DanhMucModal = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -39,15 +40,54 @@ export const DanhMucModal = () => {
       },
     );
   };
+  const submit = (values: DanhMucType) => {
+    setIsLoading(true);
+    if (mode === 'update') {
+      const res = { ...data, ...values };
+      DanhMucService.update(res.id, res).subscribe(
+        (res) => {
+          if (res) {
+            form.resetFields();
+            setIsLoading(false);
+            DanhMucService.closeModal();
+          }
+        },
+        (err) => {
+          console.log(err);
+          setIsLoading(false);
+        },
+      );
+    } else {
+      DanhMucService.create(values).subscribe(
+        (res) => {
+          if (res) {
+            form.resetFields();
+            setIsLoading(false);
+            DanhMucService.closeModal();
+          }
+        },
+        (err) => {
+          console.log(err);
+          setIsLoading(false);
+        },
+      );
+    }
+  };
   return (
     <>
       <Modal
-        okText="Lưu"
-        cancelText="Đóng"
         open={isModalOpen}
-        onCancel={() => DanhMucService.closeModal()}
         title="Danh Mục"
-        onOk={() => form.submit()}
+        footer={
+          <>
+            <SaveButton onClick={() => form.submit()} />
+            <CloseButton
+              onClick={() => {
+                DanhMucService.closeModal();
+              }}
+            />
+          </>
+        }
       >
         <Spin spinning={isLoading}>
           <Form
@@ -56,27 +96,7 @@ export const DanhMucModal = () => {
             wrapperCol={{ span: 16 }}
             layout="horizontal"
             form={form}
-            onFinish={(values: DanhMucType) => {
-              setIsLoading(true);
-              if (mode === 'update') {
-                const res = { ...data, ...values };
-                DanhMucService.update(res.id, res).subscribe((res) => {
-                  if (res) {
-                    form.resetFields();
-                    setIsLoading(false);
-                    DanhMucService.closeModal();
-                  }
-                });
-              } else {
-                DanhMucService.create(values).subscribe((res) => {
-                  if (res) {
-                    form.resetFields();
-                    setIsLoading(false);
-                    DanhMucService.closeModal();
-                  }
-                });
-              }
-            }}
+            onFinish={submit}
           >
             <Form.Item label="Tên danh mục" name="ten">
               <Input />

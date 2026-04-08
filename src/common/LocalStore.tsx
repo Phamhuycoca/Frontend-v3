@@ -7,6 +7,8 @@ export const getRefreshToken = () => {
 };
 
 export const setTokens = (accessToken: string, refreshToken: string) => {
+  console.log('accessToken', accessToken);
+
   localStorage.setItem('access_token', accessToken);
   localStorage.setItem('refresh_token', refreshToken);
 };

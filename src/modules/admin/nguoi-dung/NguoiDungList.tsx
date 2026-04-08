@@ -6,6 +6,7 @@ import { CreateButton, DeleteButton, EditButton } from '../../../components/Butt
 import ModalService from '../../../utils/services/ModalService';
 import { setMeta, setNguoiDungList } from '../../../stores/nguoidung.slice';
 import { NguoiDungModal } from './NguoiDungModal';
+import { Space } from 'antd';
 
 export const NguoiDungList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -47,27 +48,29 @@ export const NguoiDungList = () => {
         dataIndex: 'action',
         render: (_: any, record: any) => (
           <div>
-            <DeleteButton
-              onClick={async () => {
-                const confirmed = await ModalService.confirm();
-                if (confirmed) {
-                  NguoiDungSevice.delete(record.id).subscribe(
-                    () => {
-                      ModalService.close();
-                    },
-                    (error) => {
-                      console.error(error);
-                      ModalService.close();
-                    },
-                  );
-                }
-              }}
-            />
-            <EditButton
-              onClick={async () => {
-                NguoiDungSevice.openUpdateModal(record);
-              }}
-            />
+            <Space>
+              <EditButton
+                onClick={async () => {
+                  NguoiDungSevice.openUpdateModal(record);
+                }}
+              />
+              <DeleteButton
+                onClick={async () => {
+                  const confirmed = await ModalService.confirm();
+                  if (confirmed) {
+                    NguoiDungSevice.delete(record.id).subscribe(
+                      () => {
+                        ModalService.close();
+                      },
+                      (error) => {
+                        console.error(error);
+                        ModalService.close();
+                      },
+                    );
+                  }
+                }}
+              />
+            </Space>
           </div>
         ),
       },
