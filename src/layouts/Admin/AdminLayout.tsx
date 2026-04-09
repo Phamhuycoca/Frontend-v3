@@ -36,6 +36,14 @@ const items3: MenuProps['items'] = [
     label: 'Quản lý danh mục',
     key: 'danh-muc',
   },
+  {
+    label: 'Quản lý vai trò',
+    key: 'vai-tro',
+  },
+  {
+    label: 'Quản lý quyền truy cập',
+    key: 'quyen-truy-cap',
+  },
 ];
 
 const items: MenuProps['items'] = [

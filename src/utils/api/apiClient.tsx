@@ -3,7 +3,7 @@ import axios from 'axios';
 import { getAccessToken, clearTokens, getRefreshToken, setTokens } from '../../common/LocalStore';
 
 const apiClient: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: import.meta.env.VITE_BASE_URL || 'http://localhost:5109/api',
   timeout: 100000,
 });
 

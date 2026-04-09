@@ -69,10 +69,6 @@ export class ApiObservable<T> {
   getOne<R>(id: string): Observable<ResponseData<R>> {
     return from(apiClient.get<ResponseData<R>>(`${this.url}/${id}`)).pipe(
       map((res) => {
-        const message = res.data.message || 'Lấy thông tin thành công';
-        if (res.data.data) {
-          AlertService.success(message);
-        }
         return res.data;
       }),
       catchError((err) => this.handleError(err, 'fetching detail')),
@@ -84,6 +80,8 @@ export class ApiObservable<T> {
     return from(apiClient.post<ResponseData<R>>(this.url, data)).pipe(
       map((res) => {
         AlertService.success(res.data.message || 'Thêm mới thành công');
+        console.log('ressssssssss', this.key);
+
         this.refreshList('create', this.key);
         return res.data;
       }),
@@ -146,6 +144,9 @@ export class ApiObservable<T> {
 
   // ================= REFRESH =================
   refreshList(mode: 'create' | 'update' | 'delete' = 'create', key: string) {
+    console.log('mode', mode);
+    console.log('key', key);
+
     this.refreshSubject.next({ mode, key });
   }
 }
