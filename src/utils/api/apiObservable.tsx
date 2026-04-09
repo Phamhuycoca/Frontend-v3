@@ -22,8 +22,7 @@ export class ApiObservable<T> {
 
   // ================= COMMON ERROR HANDLER =================
   private handleError(err: any, action: string) {
-    const msg = err?.response?.data?.Message ?? err?.response?.data?.message ?? 'Có lỗi xảy ra';
-    AlertService.error(msg);
+    //const msg = err?.response?.data?.Message ?? err?.response?.data?.message ?? 'Có lỗi xảy ra';
     console.error(`Error ${action}:`, err);
     return throwError(() => err);
   }

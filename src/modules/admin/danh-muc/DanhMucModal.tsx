@@ -113,10 +113,10 @@ export const DanhMucModal = () => {
             <Form.Item label="Cấp cha" name="cap_cha_id">
               <TreeSelect allowClear treeData={danhMucList} title="Chọn cấp cha" />
             </Form.Item>
-            <Form.Item label="Loại danh mục" name="loai_danh_muc">
+            <Form.Item label="Loại danh mục" name="loai_danh_muc" initialValue={true}>
               <Radio.Group>
-                <Radio value={false}>Danh mục chung</Radio>
-                <Radio value={true}>Danh mục chức năng</Radio>
+                <Radio value={true}>Điều hướng</Radio>
+                <Radio value={false}>Chức năng</Radio>
               </Radio.Group>
             </Form.Item>
           </Form>

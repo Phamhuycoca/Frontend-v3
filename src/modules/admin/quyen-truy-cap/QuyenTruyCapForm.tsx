@@ -1,33 +1,31 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import {
-  CloseButton,
-  CommonButton,
-  DeleteButton,
-  EditButton,
-  SaveButton,
-} from '../../../components/Button';
-import { Form, Input, Row, Space, Spin } from 'antd';
-import type { VaiTroType } from './VaiTro';
-import VaiTroService from '../../../utils/services/VaiTroService';
-import { useEffect, useState } from 'react';
+import { Form, Input, Row, Space, Spin, TreeSelect } from 'antd';
+import { CloseButton, DeleteButton, EditButton, SaveButton } from '../../../components/Button';
 import ModalService from '../../../utils/services/ModalService';
+import QuyenTruyCapService from '../../../utils/services/QuyenTruyCapService';
+import { useEffect, useState } from 'react';
+import type { QuyenTruyCapType } from './QuyenTruyCap';
+import { useNavigate, useParams } from 'react-router-dom';
+import DanhMucService from '../../../utils/services/DanhMucService';
+import { MetaStateDefaut } from './../../../common/interface';
+import { ConvertTreeSelect } from '../../../utils/helpers/Convert';
 
-export const VaiTroForm = () => {
+export const QuyenTruyCapForm = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
-  const onFinish = (values: VaiTroType) => {
+  const [danhMucList, setDanhMucList] = useState<any>([]);
+
+  const onFinish = (values: QuyenTruyCapType) => {
     if (id && id !== 'new') {
       setIsLoading(true);
       const data = { ...values, id };
-      VaiTroService.update(id, data).subscribe(
+      QuyenTruyCapService.update(id, data).subscribe(
         (res) => {
           if (res) {
             setEditMode(true);
             setIsLoading(false);
-            //navigate('..');
           }
         },
         (err) => {
@@ -37,7 +35,7 @@ export const VaiTroForm = () => {
       );
     } else {
       setIsLoading(true);
-      VaiTroService.create(values).subscribe(
+      QuyenTruyCapService.create(values).subscribe(
         (res) => {
           if (res) {
             setIsLoading(false);
@@ -53,9 +51,10 @@ export const VaiTroForm = () => {
     }
   };
   useEffect(() => {
+    fetchDanhMuc();
     if (id && id !== 'new') {
       setIsLoading(true);
-      VaiTroService.getById(id).subscribe(
+      QuyenTruyCapService.getById(id).subscribe(
         (res) => {
           form.setFieldsValue(res.data);
           setEditMode(true);
@@ -71,6 +70,16 @@ export const VaiTroForm = () => {
       setEditMode(false);
     }
   }, [id]);
+  const fetchDanhMuc = () => {
+    DanhMucService.getDanhMucList(MetaStateDefaut).subscribe(
+      (res) => {
+        setDanhMucList(ConvertTreeSelect(res.data));
+      },
+      (error) => {
+        console.error(error);
+      },
+    );
+  };
   return (
     <>
       <Spin spinning={isLoading}>
@@ -78,7 +87,6 @@ export const VaiTroForm = () => {
           <Space>
             {editMode ? (
               <Space>
-                <CommonButton text="Phân quyền" />
                 <EditButton
                   onClick={() => {
                     setEditMode(false);
@@ -89,7 +97,7 @@ export const VaiTroForm = () => {
                     const confirmed = await ModalService.confirm();
                     if (confirmed) {
                       if (id && id !== 'new') {
-                        VaiTroService.delete(id).subscribe(
+                        QuyenTruyCapService.delete(id).subscribe(
                           () => {
                             if (id !== 'new') {
                               navigate('..');
@@ -120,12 +128,28 @@ export const VaiTroForm = () => {
             />
           </Space>
         </Row>
-        <Form form={form} onFinish={onFinish} className="mt-4">
+        <Form
+          form={form}
+          onFinish={onFinish}
+          className="mt-4"
+          labelAlign="left"
+          labelCol={{ span: 3 }}
+          wrapperCol={{ span: 21 }}
+        >
           <Form.Item name={'ma'} label="Mã">
             <Input disabled={editMode} />
           </Form.Item>
           <Form.Item name={'ten'} label="Tên">
             <Input disabled={editMode} />
+          </Form.Item>
+          <Form.Item name={'danh_muc_id'} label="Danh mục">
+            <TreeSelect
+              disabled={editMode}
+              allowClear
+              treeDefaultExpandAll
+              treeData={danhMucList}
+              title="Chọn danh mục"
+            />
           </Form.Item>
         </Form>
       </Spin>

@@ -11,7 +11,6 @@ import type { MenuProps } from 'antd';
 import {
   Avatar,
   Badge,
-  Breadcrumb,
   Button,
   Col,
   Dropdown,
@@ -288,10 +287,6 @@ const AdminLayout: React.FC = () => {
             padding: '16px 16px',
           }}
         >
-          <Breadcrumb
-            items={[{ title: 'Trang chủ' }, { title: 'Quản lý danh mục' }]}
-            className="mb-3"
-          />
           <Outlet />
         </Content>
       </Layout>

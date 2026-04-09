@@ -7,7 +7,7 @@ import { setDanhMucList, setMeta } from '../../../stores/danhmuc.slice';
 import { CreateButton, DeleteButton, EditButton } from '../../../components/Button';
 import ModalService from '../../../utils/services/ModalService';
 import { ConstDanhMuc } from './DanhMuc';
-import { Space } from 'antd';
+import { Breadcrumb, Space } from 'antd';
 export const DanhMucList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [columns, setColumns] = useState<any[]>([]);
@@ -52,7 +52,7 @@ export const DanhMucList = () => {
       {
         title: 'Loại danh mục',
         dataIndex: 'loai_danh_muc',
-        render: (value: boolean) => (value ? 'Danh mục chức năng' : 'Danh mục chung'),
+        render: (value: boolean) => (value ? 'Diều hướng' : 'Chức năng'),
       },
       {
         title: 'Hành động',
@@ -104,6 +104,10 @@ export const DanhMucList = () => {
   };
   return (
     <>
+      <Breadcrumb
+        items={[{ title: 'Trang chủ' }, { title: 'Quản lý danh mục' }]}
+        className="mb-3"
+      />
       <TableList
         dataSource={danhMucList}
         isLoading={isLoading}

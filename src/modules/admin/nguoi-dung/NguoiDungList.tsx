@@ -6,7 +6,7 @@ import { CreateButton, DeleteButton, EditButton } from '../../../components/Butt
 import ModalService from '../../../utils/services/ModalService';
 import { setMeta, setNguoiDungList } from '../../../stores/nguoidung.slice';
 import { NguoiDungModal } from './NguoiDungModal';
-import { Space } from 'antd';
+import { Breadcrumb, Space } from 'antd';
 
 export const NguoiDungList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -91,6 +91,10 @@ export const NguoiDungList = () => {
   };
   return (
     <>
+      <Breadcrumb
+        items={[{ title: 'Trang chủ' }, { title: 'Quản lý người dùng' }]}
+        className="mb-3"
+      />
       <TableList
         dataSource={nguoiDungList}
         isLoading={isLoading}

@@ -1,28 +1,25 @@
-import { TableList } from '../../../components/Table';
-import { CreateButton } from '../../../components/Button';
 import { Breadcrumb, Col, Row } from 'antd';
+import { TableList } from '../../../components/Table';
+import { setMeta, setQuyenTruyCapList } from '../../../stores/quyentruycap.slice';
+import { CreateButton } from '../../../components/Button';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import VaiTroService from '../../../utils/services/VaiTroService';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMeta, setVaiTroList } from '../../../stores/vaitro.slice';
+import { useEffect, useState } from 'react';
+import QuyenTruyCapService from '../../../utils/services/QuyenTruyCapService';
 
-export const VaiTroList = () => {
+export const QuyenTruyCapList = () => {
   const navigate = useNavigate();
   const [colums, setColumns] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const { vaiTroList, meta } = useSelector((state: any) => state.vaitro);
+  const { quyenTryCapList, meta } = useSelector((state: any) => state.quyentruycap);
   useEffect(() => {
-    const sub = VaiTroService.refresh$.subscribe((res) => {
-      if (res.key === 'VaiTroList') {
+    const sub = QuyenTruyCapService.refresh$.subscribe((res) => {
+      if (res.key === 'QuyenTruyCapList') {
         fetchList();
       }
     });
     fetchList();
-    return () => sub.unsubscribe();
-  }, [meta]);
-  useEffect(() => {
     setColumns([
       {
         title: 'Mã',
@@ -34,12 +31,13 @@ export const VaiTroList = () => {
         dataIndex: 'ten',
       },
     ]);
-  }, []);
+    return () => sub.unsubscribe();
+  }, [meta]);
   const fetchList = () => {
     setIsLoading(true);
-    VaiTroService.getVaiTroList().subscribe(
+    QuyenTruyCapService.getQuyenTruyCapList(meta).subscribe(
       (res) => {
-        dispatch(setVaiTroList(res.data));
+        dispatch(setQuyenTruyCapList(res.data));
         setIsLoading(false);
       },
       (error) => {
@@ -48,11 +46,10 @@ export const VaiTroList = () => {
       },
     );
   };
-
   return (
     <>
       <Breadcrumb
-        items={[{ title: 'Trang chủ' }, { title: 'Quản lý vai trò người dùng' }]}
+        items={[{ title: 'Trang chủ' }, { title: 'Quản lý quyền truy cập' }]}
         className="mb-3"
       />
       <Row gutter={16}>
@@ -60,7 +57,7 @@ export const VaiTroList = () => {
           <Row gutter={[0, 16]}>
             <Col span={24}>
               <TableList
-                dataSource={vaiTroList}
+                dataSource={quyenTryCapList}
                 isLoading={isLoading}
                 columns={colums}
                 isSearch={true}
@@ -82,7 +79,7 @@ export const VaiTroList = () => {
                   <>
                     <CreateButton
                       onClick={() => {
-                        navigate('/vai-tro/new');
+                        navigate('/quyen-truy-cap/new');
                       }}
                     />
                   </>
