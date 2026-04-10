@@ -3,7 +3,6 @@ import AdminLayout from '../layouts/Admin/AdminLayout';
 import { DangNhap } from '../layouts/Auth/DangNhap';
 import { DanhMucList } from '../modules/admin/danh-muc/DanhMucList';
 import { NguoiDungList } from '../modules/admin/nguoi-dung/NguoiDungList';
-import { QuyenTruyCapModule } from '../modules/admin/quyen-truy-cap/Module';
 import { VaiTroModule } from '../modules/admin/vai-tro/Module';
 
 const Routers: TypeRouter[] = [
@@ -22,10 +21,6 @@ const Routers: TypeRouter[] = [
       {
         path: '/vai-tro/*',
         element: <VaiTroModule />,
-      },
-      {
-        path: '/quyen-truy-cap/*',
-        element: <QuyenTruyCapModule />,
       },
     ],
   },

@@ -15,8 +15,6 @@ export const NguoiDungList = () => {
   const { nguoiDungList, meta } = useSelector((state: any) => state.nguoidung);
   useEffect(() => {
     const sub = NguoiDungSevice.refresh$.subscribe((res) => {
-      console.log('resssssssssssss', res);
-
       if (res.key === 'NguoiDungList') {
         fetchDanhMucList();
       }

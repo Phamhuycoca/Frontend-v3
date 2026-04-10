@@ -2,13 +2,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import danhMucSlice from './danhmuc.slice';
 import nguoiDungSlice from './nguoidung.slice';
 import vaiTroSlice from './vaitro.slice';
-import quyenTruyCapSlice from './quyentruycap.slice';
 export const store = configureStore({
   reducer: {
     danhmuc: danhMucSlice,
     nguoidung: nguoiDungSlice,
     vaitro: vaiTroSlice,
-    quyentruycap: quyenTruyCapSlice,
   },
 });
 

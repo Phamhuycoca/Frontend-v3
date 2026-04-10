@@ -12,6 +12,7 @@ export class ApiObservable<T> {
     open: false,
     mode: 'create',
   });
+  private baseModalSubject = new Subject<any>();
 
   private refreshSubject = new Subject<refreshList>();
 
@@ -117,6 +118,7 @@ export class ApiObservable<T> {
   // ================= OBSERVABLE =================
   modal$ = this.modalSubject.asObservable();
   refresh$ = this.refreshSubject.asObservable();
+  baseModal$ = this.baseModalSubject.asObservable();
 
   // ================= MODAL =================
   openCreateModal() {
@@ -140,12 +142,12 @@ export class ApiObservable<T> {
       mode: 'close',
     });
   }
+  baseModal(data: any) {
+    this.baseModalSubject.next(data);
+  }
 
   // ================= REFRESH =================
   refreshList(mode: 'create' | 'update' | 'delete' = 'create', key: string) {
-    console.log('mode', mode);
-    console.log('key', key);
-
     this.refreshSubject.next({ mode, key });
   }
 }

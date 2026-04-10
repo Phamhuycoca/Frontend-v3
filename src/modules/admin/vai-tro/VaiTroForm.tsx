@@ -11,6 +11,7 @@ import type { VaiTroType } from './VaiTro';
 import VaiTroService from '../../../utils/services/VaiTroService';
 import { useEffect, useState } from 'react';
 import ModalService from '../../../utils/services/ModalService';
+import { VaiTroNguoiDungModal } from './VaiTroNguoiDungModal';
 
 export const VaiTroForm = () => {
   const navigate = useNavigate();
@@ -27,7 +28,6 @@ export const VaiTroForm = () => {
           if (res) {
             setEditMode(true);
             setIsLoading(false);
-            //navigate('..');
           }
         },
         (err) => {
@@ -78,7 +78,16 @@ export const VaiTroForm = () => {
           <Space>
             {editMode ? (
               <Space>
-                <CommonButton text="Phân quyền" />
+                <CommonButton
+                  text="Phân quyền"
+                  onClick={() => {
+                    VaiTroService.baseModal({
+                      open: true,
+                      mode: 'vai-tro-nguoi-dung',
+                      id: id,
+                    });
+                  }}
+                />
                 <EditButton
                   onClick={() => {
                     setEditMode(false);
@@ -129,6 +138,7 @@ export const VaiTroForm = () => {
           </Form.Item>
         </Form>
       </Spin>
+      <VaiTroNguoiDungModal />
     </>
   );
 };
